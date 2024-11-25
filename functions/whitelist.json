@@ -1,5 +1,9 @@
 [
   {
+    "address": "0xCB88F4236a91Ad0B85c7a709c96337CB7C7dE907",
+    "type": "FCFS"
+  },
+  {
     "address": "0xa703eab633e546361751b62cec0cb50d5b8875b8",
     "type": "FCFS"
   },

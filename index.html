@@ -7,12 +7,12 @@
     body {
       font-family: Arial, sans-serif;
       background-color: #f0f0f0;
-      padding: 0;
-      margin:0;
+      padding: 50px;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
+      margin: 0;
     }
     .container {
       background-color: #fff;
@@ -58,12 +58,23 @@
     .loading {
       color: #555;
     }
+
+    /* Responsive Design */
+    @media (max-width: 600px) {
+      .container {
+        width: 90%;
+        padding: 20px;
+      }
+      input[type="text"] {
+        width: 100%;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Captain Laserhawk Whitelist Checker</h1>
-    <input type="text" id="walletInput" placeholder="Enter your wallet address">
+    <input type="text" id="walletInput" placeholder="Enter your wallet address" aria-label="Wallet Address">
     <br>
     <button onclick="checkWhitelist()">Check</button>
     <div class="result" id="result"></div>
@@ -85,7 +96,7 @@
         return;
       }
 
-      resultDiv.innerHTML = '<span class="loading">Checking...</span>';
+      resultDiv.innerHTML = '<span class="loading">🔄 Checking...</span>';
 
       try {
         const response = await fetch('/.netlify/functions/checkWhitelist?wallet=' + encodeURIComponent(wallet));
@@ -96,7 +107,8 @@
 
         if (data.success) {
           if (data.whitelisted) {
-            resultDiv.innerHTML = '<span class="success">✅ Your wallet is whitelisted!</span>';
+            // Display the whitelist type
+            resultDiv.innerHTML = `<span class="success">✅ Your wallet is whitelisted!<br>Type: ${data.type}</span>`;
           } else {
             resultDiv.innerHTML = '<span class="failure">❌ Your wallet is not whitelisted.</span>';
           }

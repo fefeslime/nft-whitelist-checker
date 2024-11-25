@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>NFT Mint Whitelist Checker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      padding: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background-color: #fff;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 400px;
+    }
+    h1 {
+      margin-bottom: 20px;
+    }
+    input[type="text"] {
+      width: 80%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 2px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 20px;
+      border: none;
+      background-color: #4CAF50;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+    .success {
+      color: green;
+    }
+    .failure {
+      color: red;
+    }
+    .loading {
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Whitelist Checker</h1>
+    <input type="text" id="walletInput" placeholder="Enter your wallet address">
+    <br>
+    <button onclick="checkWhitelist()">Check</button>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    async function checkWhitelist() {
+      const wallet = document.getElementById('walletInput').value.trim();
+      const resultDiv = document.getElementById('result');
+
+      // Basic Wallet Address Validation
+      const walletRegex = /^0x[a-fA-F0-9]{40}$/;
+      if (!wallet) {
+        resultDiv.innerHTML = '<span class="failure">Please enter a wallet address.</span>';
+        return;
+      }
+      if (!walletRegex.test(wallet)) {
+        resultDiv.innerHTML = '<span class="failure">Invalid wallet address format.</span>';
+        return;
+      }
+
+      resultDiv.innerHTML = '<span class="loading">Checking...</span>';
+
+      try {
+        const response = await fetch('/.netlify/functions/checkWhitelist?wallet=' + encodeURIComponent(wallet));
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+
+        if (data.success) {
+          if (data.whitelisted) {
+            resultDiv.innerHTML = '<span class="success">✅ Your wallet is whitelisted!</span>';
+          } else {
+            resultDiv.innerHTML = '<span class="failure">❌ Your wallet is not whitelisted.</span>';
+          }
+        } else {
+          resultDiv.innerHTML = `<span class="failure">${data.message}</span>`;
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        resultDiv.innerHTML = '<span class="failure">An error occurred. Please try again later.</span>';
+      }
+    }
+  </script>
+</body>
+</html>

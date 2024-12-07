@@ -24933,7 +24933,7 @@
     },
     {
         "address": "0x6F668AC9e36888927a37E3625865D4b02AB683F3",
-        "type": NaN
+        "type": "GTD"
     },
     {
         "address": "0x6f674bc8ECAB9c5F25716abdb722D2fEE74CD0fb",
@@ -34197,7 +34197,7 @@
     },
     {
         "address": "0x9908dB479AEFDCd14123FFc57bA49c97F3ad12C8",
-        "type": NaN
+        "type": "GTD"
     },
     {
         "address": "0x990b68d78783583f3559710730Bc38Cb5ba8cE76",
